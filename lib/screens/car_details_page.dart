@@ -5,7 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
 class CarDetailsPage extends StatelessWidget {
-  const CarDetailsPage({Key? key}) : super(key: key);
+  final Car car;
+
+  const CarDetailsPage({super.key, required this.car});
 
   @override
   Widget build(BuildContext context) {
@@ -23,10 +25,10 @@ class CarDetailsPage extends StatelessWidget {
         children: [
           CarCard(
             car: Car(
-              Model: 'Toyota Prado 4x4 TX',
-              distance: 100,
-              fuelCapacity: 50,
-              pricePerHour: 55,
+              Model: car.Model,
+              distance: car.distance,
+              fuelCapacity: car.fuelCapacity,
+              pricePerHour: car.pricePerHour,
             ),
           ),
           SizedBox(height: 20),
@@ -104,10 +106,10 @@ class CarDetailsPage extends StatelessWidget {
               children: [
                 MoreCard(
                   car: Car(
-                    Model: 'Toyota Prado 4x4 TX',
-                    distance: 100,
-                    fuelCapacity: 50,
-                    pricePerHour: 55,
+                    Model: car.Model + "-1",
+                    distance: car.distance + 100,
+                    fuelCapacity: car.fuelCapacity + 100,
+                    pricePerHour: car.pricePerHour+10,
                   ),
                 ),
                 SizedBox(
@@ -115,10 +117,10 @@ class CarDetailsPage extends StatelessWidget {
                 ),
                 MoreCard(
                   car: Car(
-                    Model: 'Toyota Prado 4x4 TX',
-                    distance: 100,
-                    fuelCapacity: 50,
-                    pricePerHour: 55,
+                    Model: car.Model + "-2",
+                    distance: car.distance + 200,
+                    fuelCapacity: car.fuelCapacity + 200,
+                    pricePerHour: car.pricePerHour+20,
                   ),
                 ),
                 SizedBox(
@@ -126,10 +128,10 @@ class CarDetailsPage extends StatelessWidget {
                 ),
                 MoreCard(
                   car: Car(
-                    Model: 'Toyota Prado 4x4 TX',
-                    distance: 100,
-                    fuelCapacity: 50,
-                    pricePerHour: 55,
+                    Model: car.Model + "-3",
+                    distance: car.distance + 300,
+                    fuelCapacity: car.fuelCapacity + 300,
+                    pricePerHour: car.pricePerHour+30,
                   ),
                 ),
                 SizedBox(

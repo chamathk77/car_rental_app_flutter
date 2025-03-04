@@ -1,6 +1,7 @@
 import 'package:car_rental_app_flutter/firebase_options.dart';
 import 'package:car_rental_app_flutter/screens/car_details_page.dart';
 import 'package:car_rental_app_flutter/screens/car_list_screen.dart';
+import 'package:car_rental_app_flutter/screens/maps_details_page.dart';
 import 'package:car_rental_app_flutter/screens/onboarding_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -41,7 +42,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home: OnboardingPage(),
+      home: MapsDetailsPage(),
     );
   }
 }
