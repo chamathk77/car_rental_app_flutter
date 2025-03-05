@@ -66,6 +66,13 @@ flutter:
   assets: 
       - assets/
 
+  fonts:
+    - family: Roboto
+      fonts:
+        - asset: assets/fonts/Roboto_Condensed-Bold.ttf
+        - asset: assets/fonts/Roboto_Condensed-Regular.ttf
+          weight: 700    
+
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
