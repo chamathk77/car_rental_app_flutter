@@ -1,9 +1,12 @@
+import 'package:car_rental_app_flutter/models/car.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 
 class MapsDetailsPage extends StatelessWidget {
-  const MapsDetailsPage({Key? key}) : super(key: key);
+  final Car car;
+
+  const MapsDetailsPage({super.key, required this.car});
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +34,7 @@ class MapsDetailsPage extends StatelessWidget {
             bottom: 0,
             left: 0,
             right: 0,
-            child: CarDetailsCard(),
+            child: CarDetailsCard(car: car),
           )
         ],
       ),
@@ -39,9 +42,9 @@ class MapsDetailsPage extends StatelessWidget {
   }
 }
 
-Widget CarDetailsCard() {
+Widget CarDetailsCard({required Car car}) {
   return SizedBox(
-    height: 300,
+    height: 400,
     child: Stack(
       children: [
         Container(
@@ -64,7 +67,7 @@ Widget CarDetailsCard() {
                 height: 20,
               ),
               Text(
-                'Car Model',
+                '${car.Model}',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 24,
@@ -77,12 +80,12 @@ Widget CarDetailsCard() {
               Row(
                 children: [
                   Icon(Icons.directions_car, color: Colors.white, size: 16),
-                  Text('> car.distance km',
+                  Text('> ${car.distance} km',
                       style: TextStyle(color: Colors.white, fontSize: 14)),
                   SizedBox(width: 10),
                   Icon(Icons.battery_full, color: Colors.white, size: 14),
                   SizedBox(width: 5),
-                  Text('car.fuelCapacity',
+                  Text('${car.fuelCapacity.toString()} kWh',
                       style: TextStyle(color: Colors.white, fontSize: 14)),
                 ],
               )
@@ -118,7 +121,7 @@ Widget CarDetailsCard() {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      '\$car.pricePerHour/day',
+                      '\$${car.pricePerHour}/day',
                       style: TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
@@ -139,7 +142,9 @@ Widget CarDetailsCard() {
               ],
             ),
           ),
-        )
+        ),
+        Positioned(
+            top: 50, right: 20, child: Image.asset('assets/white_car.png'))
       ],
     ),
   );
