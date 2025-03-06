@@ -5,10 +5,42 @@ import 'package:car_rental_app_flutter/screens/widgets/more_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 
-class CarDetailsPage extends StatelessWidget {
+class CarDetailsPage extends StatefulWidget {
   final Car car;
 
   const CarDetailsPage({super.key, required this.car});
+
+  @override
+  State<CarDetailsPage> createState() => _CarDetailsPageState();
+}
+
+class _CarDetailsPageState extends State<CarDetailsPage>
+    with SingleTickerProviderStateMixin {
+  AnimationController? _controller;
+  Animation<double>? _animation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: Duration(seconds: 3),
+    );
+    _animation = Tween<double>(begin: 1.0, end: 1.5).animate(_controller!)
+      ..addListener(() {
+        setState(() {
+          // _scale = _animation.value;
+        });
+      });
+
+    _controller!.repeat();
+  }
+
+  @override
+  void dispose() {
+    _controller!.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,10 +58,10 @@ class CarDetailsPage extends StatelessWidget {
         children: [
           CarCard(
             car: Car(
-              Model: car.Model,
-              distance: car.distance,
-              fuelCapacity: car.fuelCapacity,
-              pricePerHour: car.pricePerHour,
+              Model: widget.car.Model,
+              distance: widget.car.distance,
+              fuelCapacity: widget.car.fuelCapacity,
+              pricePerHour: widget.car.pricePerHour,
             ),
           ),
           SizedBox(height: 20),
@@ -85,7 +117,7 @@ class CarDetailsPage extends StatelessWidget {
                         context,
                         MaterialPageRoute(
                             builder: (context) => MapsDetailsPage(
-                                  car: car,
+                                  car: widget.car,
                                 )),
                       );
                     },
@@ -93,10 +125,6 @@ class CarDetailsPage extends StatelessWidget {
                       height: 170,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(20),
-                        image: DecorationImage(
-                          image: AssetImage('assets/maps.png'),
-                          fit: BoxFit.cover,
-                        ),
                         boxShadow: [
                           BoxShadow(
                             color: Colors.black12,
@@ -105,6 +133,17 @@ class CarDetailsPage extends StatelessWidget {
                             offset: Offset(0, 3),
                           )
                         ],
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: Transform.scale(
+                          scale: _animation!.value,
+                          alignment: Alignment.center,
+                          child: Image.asset(
+                            'assets/maps.png',
+                            fit: BoxFit.cover,
+                          ),
+                        ),
                       ),
                     ),
                   ),
@@ -118,10 +157,10 @@ class CarDetailsPage extends StatelessWidget {
               children: [
                 MoreCard(
                   car: Car(
-                    Model: car.Model + "-1",
-                    distance: car.distance + 100,
-                    fuelCapacity: car.fuelCapacity + 100,
-                    pricePerHour: car.pricePerHour + 10,
+                    Model: widget.car.Model + "-1",
+                    distance: widget.car.distance + 100,
+                    fuelCapacity: widget.car.fuelCapacity + 100,
+                    pricePerHour: widget.car.pricePerHour + 10,
                   ),
                 ),
                 SizedBox(
@@ -129,10 +168,10 @@ class CarDetailsPage extends StatelessWidget {
                 ),
                 MoreCard(
                   car: Car(
-                    Model: car.Model + "-2",
-                    distance: car.distance + 200,
-                    fuelCapacity: car.fuelCapacity + 200,
-                    pricePerHour: car.pricePerHour + 20,
+                    Model: widget.car.Model + "-2",
+                    distance: widget.car.distance + 200,
+                    fuelCapacity: widget.car.fuelCapacity + 200,
+                    pricePerHour: widget.car.pricePerHour + 20,
                   ),
                 ),
                 SizedBox(
@@ -140,10 +179,10 @@ class CarDetailsPage extends StatelessWidget {
                 ),
                 MoreCard(
                   car: Car(
-                    Model: car.Model + "-3",
-                    distance: car.distance + 300,
-                    fuelCapacity: car.fuelCapacity + 300,
-                    pricePerHour: car.pricePerHour + 30,
+                    Model: widget.car.Model + "-3",
+                    distance: widget.car.distance + 300,
+                    fuelCapacity: widget.car.fuelCapacity + 300,
+                    pricePerHour: widget.car.pricePerHour + 30,
                   ),
                 ),
                 SizedBox(

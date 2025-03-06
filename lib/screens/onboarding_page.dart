@@ -1,23 +1,68 @@
 import 'package:car_rental_app_flutter/screens/car_list_screen.dart';
 import 'package:flutter/material.dart';
 
-class OnboardingPage extends StatelessWidget {
+class OnboardingPage extends StatefulWidget {
   const OnboardingPage({Key? key}) : super(key: key);
+
+  @override
+  _OnboardingPageState createState() => _OnboardingPageState();
+}
+
+class _OnboardingPageState extends State<OnboardingPage>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  late Animation<Offset> _imageAnimation;
+  late Animation<Offset> _textAnimation;
+  late Animation<Offset> _buttonAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 800),
+    );
+
+    _imageAnimation = Tween<Offset>(
+      begin: const Offset(-1.5, 0), // Slide from left
+      end: Offset.zero, // To its original position
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
+
+    _textAnimation = Tween<Offset>(
+      begin: const Offset(-2.0, 0), // More delay for text
+      end: Offset.zero,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
+
+    _buttonAnimation = Tween<Offset>(
+      begin: const Offset(-2.5, 0), // More delay for button
+      end: Offset.zero,
+    ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
+
+    _controller.forward();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-        ),
-        backgroundColor: Color.fromARGB(255, 30, 29, 29),
-        body: Column(
-          children: [
-            Expanded(
-              flex: 2,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+      ),
+      backgroundColor: const Color.fromARGB(255, 30, 29, 29),
+      body: Column(
+        children: [
+          Expanded(
+            flex: 2,
+            child: SlideTransition(
+              position: _imageAnimation,
               child: Container(
-                decoration: BoxDecoration(
+                decoration: const BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage("assets/onboarding.png"),
                     fit: BoxFit.cover,
@@ -25,35 +70,41 @@ class OnboardingPage extends StatelessWidget {
                 ),
               ),
             ),
-            Expanded(
-              flex: 1,
-              child: Container(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
+          ),
+          Expanded(
+            flex: 1,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  SlideTransition(
+                    position: _textAnimation,
+                    child: const Text(
                       'Premium Cars . \nEnjoy the Luxury',
                       style: TextStyle(
-                        color: const Color.fromARGB(255, 201, 199, 199),
+                        color: Color.fromARGB(255, 201, 199, 199),
                         fontSize: 32,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Text(
-                      'Premium and prestique car daily rental .  \n Experience the thrill at alower price',
+                  ),
+                  const SizedBox(height: 20),
+                  SlideTransition(
+                    position: _textAnimation,
+                    child: const Text(
+                      'Premium and prestige car daily rental. \nExperience the thrill at a lower price',
                       style: TextStyle(
                         color: Colors.grey,
                         fontSize: 16,
                       ),
                     ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    SizedBox(
+                  ),
+                  const SizedBox(height: 20),
+                  SlideTransition(
+                    position: _buttonAnimation,
+                    child: SizedBox(
                       height: 54,
                       width: 320,
                       child: ElevatedButton(
@@ -62,30 +113,27 @@ class OnboardingPage extends StatelessWidget {
                               MaterialPageRoute(
                                   builder: (context) => CarListScreen()),
                               (route) => false);
-                          // Navigator.push(
-                          //   context,
-                          //   MaterialPageRoute(
-                          //       builder: (context) => CarListScreen()),
-                          // );
                         },
                         style: ElevatedButton.styleFrom(
                           foregroundColor: Colors.black,
                           backgroundColor: Colors.white,
                         ),
-                        child: Text(
-                          'Lets\'s Go',
+                        child: const Text(
+                          "Let's Go",
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
-                    )
-                  ],
-                ),
+                    ),
+                  )
+                ],
               ),
-            )
-          ],
-        ));
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
