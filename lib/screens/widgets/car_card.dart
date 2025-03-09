@@ -2,9 +2,19 @@ import 'package:car_rental_app_flutter/models/car.dart';
 import 'package:car_rental_app_flutter/screens/car_details_page.dart';
 import 'package:flutter/material.dart';
 
-class CarCard extends StatelessWidget {
+class CarCard extends StatefulWidget {
   const CarCard({super.key, required this.car});
   final Car car;
+
+  @override
+  State<CarCard> createState() => _CarCardState();
+}
+
+class _CarCardState extends State<CarCard> {
+  void initState() {
+    super.initState();
+    print('car model is------------------ ${widget.car}');
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -14,7 +24,7 @@ class CarCard extends StatelessWidget {
           context,
           MaterialPageRoute(
             builder: (context) => CarDetailsPage(
-              car: car,
+              car: widget.car,
             ),
           ),
         );
@@ -36,12 +46,14 @@ class CarCard extends StatelessWidget {
         ),
         child: Column(
           children: [
-            Image.asset(
-              'assets/car_image.png',
-              height: 120,
-            ),
+            // Image.asset(
+            //   'https://www.toyota.lk/vehicles/Yaris-Cross/Attitude-Black/vehicle1.png',
+            //   height: 120,
+            // ),
+            Image.network(widget.car.categoryPhoto.toString(),
+                height: 150, width: double.maxFinite, fit: BoxFit.cover),
             Text(
-              car.Model,
+              widget.car.Model,
               style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
             ),
             Row(
@@ -50,16 +62,16 @@ class CarCard extends StatelessWidget {
                 Row(
                   children: [
                     Image.asset('assets/gps.png'),
-                    Text('${car.distance.toStringAsFixed(0)}km'),
+                    Text('${widget.car.distance.toStringAsFixed(0)}km'),
                     SizedBox(
                       width: 5,
                     ),
                     Image.asset('assets/pump.png'),
-                    Text('${car.fuelCapacity.toStringAsFixed(0)}L')
+                    Text('${widget.car.fuelCapacity.toStringAsFixed(0)}L')
                   ],
                 ),
                 Text(
-                  '\$${car.pricePerHour.toStringAsFixed(0)}/day',
+                  '\$${widget.car.pricePerHour.toStringAsFixed(0)}/day',
                   style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,

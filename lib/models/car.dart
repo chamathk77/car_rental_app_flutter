@@ -2,11 +2,13 @@ import 'package:flutter/widgets.dart';
 
 class Car {
   final String Model;
-  final double distance;
-  final double fuelCapacity;
-  final double pricePerHour;
+  final int distance;
+  final int fuelCapacity;
+  final int pricePerHour;
   final String? categoryPhoto; // URL for category image
-  final String? mainPhoto; // URL for main image
+  final String? mainPhoto;
+  final String? dealerName; 
+  // URL for main image
 
   Car({
     required this.Model,
@@ -15,5 +17,6 @@ class Car {
     required this.pricePerHour,
     this.categoryPhoto,
     this.mainPhoto,
+    this.dealerName
   });
 }

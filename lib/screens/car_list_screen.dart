@@ -3,7 +3,9 @@ import 'package:car_rental_app_flutter/screens/widgets/car_card.dart';
 import 'package:flutter/material.dart';
 
 class CarListScreen extends StatefulWidget {
-  CarListScreen({Key? key}) : super(key: key);
+  CarListScreen({super.key, required this.Cardata});
+
+  final List Cardata;
 
   @override
   _CarListScreenState createState() => _CarListScreenState();
@@ -14,26 +16,7 @@ class _CarListScreenState extends State<CarListScreen>
   late AnimationController _controller;
   late List<Animation<Offset>> _animations;
 
-  final List<Car> cars = [
-    Car(
-      Model: 'Toyota',
-      distance: 100,
-      fuelCapacity: 50,
-      pricePerHour: 55,
-    ),
-    Car(
-      Model: 'Honda',
-      distance: 120,
-      fuelCapacity: 45,
-      pricePerHour: 60,
-    ),
-    Car(
-      Model: 'BMW',
-      distance: 80,
-      fuelCapacity: 40,
-      pricePerHour: 100,
-    ),
-  ];
+  late List<Car> cars;
 
   @override
   void initState() {
@@ -44,19 +27,27 @@ class _CarListScreenState extends State<CarListScreen>
       duration: const Duration(milliseconds: 800),
     );
 
+    // Map the Cardata to list of Car objects
+    cars = widget.Cardata.map<Car>((data) {
+      return Car(
+        Model: data['model'], // Map the 'model' field from the data
+        distance: data['distance'], // Map the 'distance' field
+        fuelCapacity: data['fuelCapacity'], // Map the 'fuelCapacity' field
+        pricePerHour: data['pricePerHour'], // Map the 'pricePerHour' field
+        categoryPhoto: data['imageUrl'] ?? '', // Map the first image URL
+        mainPhoto: data['imageUrl2'] ?? '', // Map the second image URL
+        dealerName: data['dealerName'] ?? '',
+      );
+    }).toList();
+
+    // Initialize animations for the list
     _animations = List.generate(
       cars.length,
-      (index) => Tween<Offset>(
-        begin: const Offset(0, -1.5), // Start from top
-        end: Offset.zero, // Move to normal position
-      ).animate(
+      (index) =>
+          Tween<Offset>(begin: const Offset(0, -1.5), end: Offset.zero).animate(
         CurvedAnimation(
           parent: _controller,
-          curve: Interval(
-            index * 0.2, // Delay each item slightly
-            1.0,
-            curve: Curves.easeOut,
-          ),
+          curve: Interval(index * 0.2, 1.0, curve: Curves.easeOut),
         ),
       ),
     );
@@ -82,7 +73,7 @@ class _CarListScreenState extends State<CarListScreen>
         itemCount: cars.length,
         itemBuilder: (context, index) => SlideTransition(
           position: _animations[index], // Apply animation per car
-          child: CarCard(car: cars[index]),
+          child: CarCard(car: cars[index]), // Render each car in the list
         ),
       ),
     );

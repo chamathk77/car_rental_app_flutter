@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:car_rental_app_flutter/screens/car_list_screen.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class OnboardingPage extends StatefulWidget {
@@ -15,9 +18,14 @@ class _OnboardingPageState extends State<OnboardingPage>
   late Animation<Offset> _textAnimation;
   late Animation<Offset> _buttonAnimation;
 
+  List<Map<String, dynamic>> Cardata = [];
+
   @override
   void initState() {
     super.initState();
+
+    fetchUsers();
+
     _controller = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 800),
@@ -39,6 +47,40 @@ class _OnboardingPageState extends State<OnboardingPage>
     ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeOut));
 
     _controller.forward();
+  }
+
+  void fetchUsers() async {
+    CollectionReference users =
+        FirebaseFirestore.instance.collection('/Car_Category');
+
+    QuerySnapshot snapshot = await users.get();
+    for (var doc in snapshot.docs) {
+      Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+
+      // Assuming data is in a format like { 'Yaris': [...] }
+      data.forEach((key, value) {
+        // Assuming the value is a list with [model, price, stock, another_stock, image_url, image_url_2, dealer_name]
+        if (value is List && value.length >= 6) {
+          var mappedData = {
+            'model': value[0],
+            'name': value[0], // Name of the car
+            'distance': value[1], // Price of the car
+            'fuelCapacity': value[2], // Stock quantity
+            'pricePerHour': value[3], // Additional stock
+            'imageUrl': value[4], // Image URL 1
+            'imageUrl2': value[5], // Image URL 2
+            'dealerName': value[6] // Dealer's name
+          };
+
+          print(
+              "Mapped Data:----------------------------------- ${jsonEncode(mappedData['dealerName'])}");
+
+          setState(() {
+            Cardata.add(mappedData); // Add the mapped data to the list
+          });
+        }
+      });
+    }
   }
 
   @override
@@ -111,7 +153,9 @@ class _OnboardingPageState extends State<OnboardingPage>
                         onPressed: () {
                           Navigator.of(context).pushAndRemoveUntil(
                               MaterialPageRoute(
-                                  builder: (context) => CarListScreen()),
+                                  builder: (context) => CarListScreen(
+                                        Cardata: Cardata,
+                                      )),
                               (route) => false);
                         },
                         style: ElevatedButton.styleFrom(
