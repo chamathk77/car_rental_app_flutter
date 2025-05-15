@@ -12,8 +12,11 @@ class MapsDetailsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Maps'),
-        backgroundColor: Colors.red,
+        title: const Text(
+          'Maps',
+          style: TextStyle(color: Colors.white),
+        ),
+        backgroundColor: Colors.black54,
       ),
       body: Stack(
         children: [
@@ -57,7 +60,11 @@ Widget CarDetailsCard({required Car car}) {
               topRight: Radius.circular(30),
             ),
             boxShadow: [
-              BoxShadow(color: Colors.black38, blurRadius: 10, spreadRadius: 2)
+              BoxShadow(
+                color: Colors.black38,
+                blurRadius: 10,
+                spreadRadius: 2,
+              )
             ],
           ),
           child: Column(
